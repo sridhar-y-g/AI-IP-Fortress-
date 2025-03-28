@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defense Network - AI-IP-Fortress</title>
+    <style>
+        :root {
+            --primary: #2a4365;
+            --secondary: #4299e1;
+            --accent: #48bb78;
+            --background: #f7fafc;
+            --text: #2d3748;
+            --success: #48bb78;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--background);
+            padding-top: 70px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .module-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .module-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .module-header p {
+            font-size: 1.2rem;
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .network-visualization {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        .network-canvas {
+            width: 100%;
+            height: 400px;
+            background: var(--background);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .node.active {
+            background: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .connection {
+            position: absolute;
+            height: 2px;
+            background: var(--secondary);
+            opacity: 0.3;
+            transform-origin: left center;
+        }
+
+        .connection.active {
+            opacity: 1;
+            background: var(--accent);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .collaboration-panel {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .activity-log {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--background);
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .log-time {
+            color: var(--text);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <div class="module-header">
+            <h1>Decentralized IP Defense Network</h1>
+            <p>A collaborative network of AI agents working together to protect intellectual property across organizations</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Collaborative Defense</h3>
+                <p>AI agents share threat intelligence and coordinate responses across organizational boundaries.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Smart Contracts</h3>
+                <p>Automated enforcement of IP rights and licensing agreements through blockchain-based smart contracts.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Distributed Intelligence</h3>
+                <p>Decentralized network of AI agents that learn and adapt collectively to emerging threats.</p>
+            </div>
+        </div>
+
+        <div class="network-visualization">
+            <h2>Live Network Activity</h2>
+            <div class="network-canvas" id="network"></div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>Active Nodes</h3>
+                    <div class="metric-value" id="active-nodes">0</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Threat Intel Shared</h3>
+                    <div class="metric-value" id="intel-shared">0</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Network Health</h3>
+                    <div class="metric-value" id="network-health">100%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="collaboration-panel">
+            <h2>Collaboration Activity</h2>
+            <div class="activity-log" id="activity-log"></div>
+        </div>
+    </div>
+
+    <script>
+        // Load navbar
+        fetch('./components/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+            });
+
+        // Network visualization
+        const network = document.getElementById('network');
+        const nodes = [];
+        const connections = [];
+        let intelShared = 0;
+
+        function createNode(id, x, y) {
+            const node = document.createElement('div');
+            node.className = 'node';
+            node.textContent = `N${id}`;
+            node.style.left = `${x}%`;
+            node.style.top = `${y}%`;
+            network.appendChild(node);
+            return node;
+        }
+
+        function createConnection(node1, node2) {
+            const connection = document.createElement('div');
+            connection.className = 'connection';
+            network.appendChild(connection);
+            return connection;
+        }
+
+        function updateConnection(connection, node1, node2) {
+            const rect1 = node1.getBoundingClientRect();
+            const rect2 = node2.getBoundingClientRect();
+            const networkRect = network.getBoundingClientRect();
+
+            const x1 = rect1.left + rect1.width / 2 - networkRect.left;
+            const y1 = rect1.top + rect1.height / 2 - networkRect.top;
+            const x2 = rect2.left + rect2.width / 2 - networkRect.left;
+            const y2 = rect2.top + rect2.height / 2 - networkRect.top;
+
+            const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+
+            connection.style.width = `${length}px`;
+            connection.style.left = `${x1}px`;
+            connection.style.top = `${y1}px`;
+            connection.style.transform = `rotate(${angle}deg)`;
+        }
+
+        function addLogEntry(message) {
+            const log = document.getElementById('activity-log');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `
+                <span class="log-time">${new Date().toLocaleTimeString()}</span>
+                <span>${message}</span>
+            `;
+            log.insertBefore(entry, log.firstChild);
+
+            if (log.children.length > 10) {
+                log.removeChild(log.lastChild);
+            }
+        }
+
+        // Initialize network
+        for (let i = 0; i < 6; i++) {
+            const angle = (i / 6) * Math.PI * 2;
+            const x = 50 + Math.cos(angle) * 35;
+            const y = 50 + Math.sin(angle) * 35;
+            nodes.push(createNode(i + 1, x, y));
+        }
+
+        // Create connections
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                connections.push({
+                    element: createConnection(nodes[i], nodes[j]),
+                    node1: nodes[i],
+                    node2: nodes[j]
+                });
+            }
+        }
+
+        // Update connections positions
+        function updateConnections() {
+            connections.forEach(conn => {
+                updateConnection(conn.element, conn.node1, conn.node2);
+            });
+        }
+
+        // Simulate network activity
+        function simulateActivity() {
+            const activeNode = nodes[Math.floor(Math.random() * nodes.length)];
+            const targetNode = nodes[Math.floor(Math.random() * nodes.length)];
+
+            if (activeNode !== targetNode) {
+                activeNode.classList.add('active');
+                targetNode.classList.add('active');
+
+                const connection = connections.find(conn => 
+                    (conn.node1 === activeNode && conn.node2 === targetNode) ||
+                    (conn.node1 === targetNode && conn.node2 === activeNode)
+                );
+
+                if (connection) {
+                    connection.element.classList.add('active');
+                    setTimeout(() => {
+                        connection.element.classList.remove('active');
+                    }, 1000);
+                }
+
+                setTimeout(() => {
+                    activeNode.classList.remove('active');
+                    targetNode.classList.remove('active');
+                }, 1000);
+
+                intelShared++;
+                document.getElementById('intel-shared').textContent = intelShared;
+                addLogEntry(`Threat intelligence shared between Node ${activeNode.textContent} and Node ${targetNode.textContent}`);
+            }
+        }
+
+        // Update metrics
+        function updateMetrics() {
+            const activeNodes = 5 + Math.floor(Math.random() * 2);
+            const networkHealth = 98 + Math.random() * 2;
+            
+            document.getElementById('active-nodes').textContent = activeNodes;
+            document.getElementById('network-health').textContent = `${networkHealth.toFixed(1)}%`;
+        }
+
+        // Initialize
+        updateConnections();
+        window.addEventListener('resize', updateConnections);
+        setInterval(simulateActivity, 3000);
+        setInterval(updateMetrics, 5000);
+    </script>
+</body>
+</html>

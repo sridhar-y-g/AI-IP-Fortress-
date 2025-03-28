@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anomaly Detection - AI-IP-Fortress</title>
+    <style>
+        :root {
+            --primary: #2a4365;
+            --secondary: #4299e1;
+            --accent: #48bb78;
+            --background: #f7fafc;
+            --text: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--background);
+            padding-top: 70px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .module-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .module-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .module-header p {
+            font-size: 1.2rem;
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .demo-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .demo-visualization {
+            width: 100%;
+            height: 300px;
+            background: var(--background);
+            border-radius: 8px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .data-point {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--secondary);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .data-point.anomaly {
+            background: #e53e3e;
+            transform: scale(1.5);
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: var(--background);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-card h4 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <div class="module-header">
+            <h1>AI-Driven Anomaly Detection</h1>
+            <p>Real-time monitoring and identification of suspicious activities through advanced machine learning algorithms</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Pattern Recognition</h3>
+                <p>Advanced AI algorithms learn normal behavior patterns and quickly identify deviations that could indicate potential threats.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Real-time Monitoring</h3>
+                <p>Continuous surveillance of IP assets and user activities with instant alerts for suspicious behavior.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Behavioral Analysis</h3>
+                <p>Deep learning models analyze user behavior to establish baselines and detect anomalous activities.</p>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Live Demonstration</h2>
+            <div class="demo-visualization" id="demo-viz"></div>
+            <div class="metrics">
+                <div class="metric-card">
+                    <h4>Detection Rate</h4>
+                    <div class="metric-value" id="detection-rate">98.5%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>False Positives</h4>
+                    <div class="metric-value" id="false-positives">0.3%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Response Time</h4>
+                    <div class="metric-value" id="response-time">50ms</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load navbar
+        fetch('./components/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+            });
+
+        // Demo visualization
+        function createDataPoint() {
+            const point = document.createElement('div');
+            point.className = 'data-point';
+            point.style.left = Math.random() * 100 + '%';
+            point.style.top = Math.random() * 100 + '%';
+            
+            const isAnomaly = Math.random() < 0.1;
+            if (isAnomaly) point.classList.add('anomaly');
+            
+            document.getElementById('demo-viz').appendChild(point);
+            
+            setTimeout(() => {
+                point.remove();
+            }, 3000);
+        }
+
+        setInterval(createDataPoint, 500);
+
+        // Update metrics
+        function updateMetrics() {
+            const detectionRate = 98.5 + (Math.random() * 0.3 - 0.15);
+            const falsePositives = 0.3 + (Math.random() * 0.1 - 0.05);
+            const responseTime = 50 + Math.floor(Math.random() * 10 - 5);
+
+            document.getElementById('detection-rate').textContent = detectionRate.toFixed(1) + '%';
+            document.getElementById('false-positives').textContent = falsePositives.toFixed(1) + '%';
+            document.getElementById('response-time').textContent = responseTime + 'ms';
+        }
+
+        setInterval(updateMetrics, 2000);
+    </script>
+</body>
+</html>

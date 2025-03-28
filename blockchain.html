@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Integration - AI-IP-Fortress</title>
+    <style>
+        :root {
+            --primary: #2a4365;
+            --secondary: #4299e1;
+            --accent: #48bb78;
+            --background: #f7fafc;
+            --text: #2d3748;
+            --success: #48bb78;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--background);
+            padding-top: 70px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .module-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .module-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .module-header p {
+            font-size: 1.2rem;
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .blockchain-demo {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .blockchain-visualization {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 2rem 0;
+            margin: 2rem 0;
+        }
+
+        .block {
+            min-width: 200px;
+            padding: 1.5rem;
+            background: var(--background);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .block::after {
+            content: '→';
+            position: absolute;
+            right: -1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .block:last-child::after {
+            display: none;
+        }
+
+        .block-header {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .block-content {
+            font-family: monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
+        .verification-panel {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: var(--background);
+            border-radius: 8px;
+        }
+
+        .verification-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <div class="module-header">
+            <h1>IP Provenance & Integrity Verification</h1>
+            <p>Immutable blockchain-based tracking and AI-powered verification for intellectual property assets</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Immutable Tracking</h3>
+                <p>Blockchain-based system ensures tamper-proof recording of IP asset creation, modifications, and transfers.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Smart Verification</h3>
+                <p>AI-powered algorithms verify IP integrity and detect unauthorized modifications or usage.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Automated Rights</h3>
+                <p>Smart contracts automatically enforce IP rights and manage licensing agreements.</p>
+            </div>
+        </div>
+
+        <div class="blockchain-demo">
+            <h2>Live Blockchain Demonstration</h2>
+            <div class="blockchain-visualization" id="blockchain"></div>
+            <div class="verification-panel">
+                <h3>Real-time Verification Status</h3>
+                <div class="verification-status">
+                    <div class="status-indicator"></div>
+                    <span id="verification-message">All IP assets verified and secured</span>
+                </div>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>Blocks Created</h3>
+                    <div class="metric-value" id="blocks-count">0</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Assets Secured</h3>
+                    <div class="metric-value" id="assets-count">0</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Verification Rate</h3>
+                    <div class="metric-value" id="verification-rate">100%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load navbar
+        fetch('./components/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+            });
+
+        // Blockchain visualization
+        const blockchain = document.getElementById('blockchain');
+        let blockCount = 0;
+        let assetCount = 0;
+
+        function createBlock() {
+            const block = document.createElement('div');
+            block.className = 'block';
+            block.innerHTML = `
+                <div class="block-header">Block #${blockCount}</div>
+                <div class="block-content">
+                    Hash: ${generateHash()}<br>
+                    Timestamp: ${new Date().toISOString()}<br>
+                    Assets: ${Math.floor(Math.random() * 3) + 1}
+                </div>
+            `;
+            blockchain.appendChild(block);
+
+            // Keep only last 5 blocks visible
+            if (blockchain.children.length > 5) {
+                blockchain.removeChild(blockchain.firstChild);
+            }
+
+            blockCount++;
+            assetCount += Math.floor(Math.random() * 3) + 1;
+            updateMetrics();
+        }
+
+        function generateHash() {
+            return Array.from(crypto.getRandomValues(new Uint8Array(10)))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
+
+        function updateMetrics() {
+            document.getElementById('blocks-count').textContent = blockCount;
+            document.getElementById('assets-count').textContent = assetCount;
+            const verificationRate = 99.8 + Math.random() * 0.2;
+            document.getElementById('verification-rate').textContent = `${verificationRate.toFixed(1)}%`;
+        }
+
+        // Start blockchain simulation
+        setInterval(createBlock, 3000);
+    </script>
+</body>
+</html>

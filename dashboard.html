@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AI-IP-Fortress</title>
+    <style>
+        :root {
+            --primary: #2a4365;
+            --secondary: #4299e1;
+            --accent: #48bb78;
+            --background: #f7fafc;
+            --text: #2d3748;
+            --success: #48bb78;
+            --warning: #ecc94b;
+            --danger: #e53e3e;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--background);
+            padding-top: 70px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        .dashboard-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .dashboard-title i {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            color: white;
+        }
+
+        .action-button.primary {
+            background: var(--primary);
+        }
+
+        .action-button.secondary {
+            background: var(--secondary);
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+
+        .metrics-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--surface);
+            padding: 1.75rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px var(--shadow);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent);
+            opacity: 0.8;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .metric-title {
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .metric-title i {
+            font-size: 1.25rem;
+            color: var(--accent);
+        }
+
+        .metric-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+        }
+
+        .trend-up {
+            color: var(--success);
+            background: rgba(72, 187, 120, 0.1);
+        }
+
+        .trend-down {
+            color: var(--danger);
+            background: rgba(229, 62, 62, 0.1);
+        }
+
+        .metric-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .metric-subtitle {
+            font-size: 0.875rem;
+            color: var(--text);
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .metric-subtitle i {
+            font-size: 1rem;
+            color: var(--secondary);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .dashboard-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .metric-value {
+                font-size: 1.75rem;
+            }
+
+            .chart-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .chart-actions {
+                justify-content: center;
+            }
+
+            .chart-legend {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        .chart-card {
+            background: var(--surface);
+            padding: 1.75rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px var(--shadow);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chart-title {
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .chart-title i {
+            font-size: 1.25rem;
+            color: var(--accent);
+        }
+
+        .chart-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .chart-action {
+            padding: 0.5rem;
+            border-radius: 6px;
+            background: var(--background);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chart-action:hover {
+            background: var(--border);
+            color: var(--primary);
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text);
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .activity-feed {
+            background: var(--surface);
+            padding: 1.75rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .activity-title i {
+            font-size: 1.25rem;
+            color: var(--accent);
+        }
+
+        .activity-filters {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .activity-filter {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            background: var(--background);
+            color: var(--text);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border);
+        }
+
+        .activity-filter:hover,
+        .activity-filter.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .activity-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .activity-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .activity-list::-webkit-scrollbar-track {
+            background: var(--background);
+            border-radius: 3px;
+        }
+
+        .activity-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+            background: var(--background);
+            border: 1px solid var(--border);
+        }
+
+        .activity-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--surface);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex-grow: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 0.375rem;
+            color: var(--text);
+        }
+
+        .activity-description {
+            font-size: 0.875rem;
+            color: var(--text);
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.75rem;
+        }
+
+        .activity-time {
+            color: var(--text);
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .activity-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: rgba(72, 187, 120, 0.1);
+            color: var(--success);
+        }
+
+        .status-warning {
+            background: rgba(236, 201, 75, 0.1);
+            color: var(--warning);
+        }
+
+        .status-danger {
+            background: rgba(229, 62, 62, 0.1);
+            color: var(--danger);
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <script>
+        // Load navbar
+        fetch('./components/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+            });
+
+        // Initialize charts when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Threat Trends Chart
+            const threatCtx = document.getElementById('threatTrendsChart').getContext('2d');
+            new Chart(threatCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Critical',
+                        data: [12, 19, 15, 25, 22, 30],
+                        borderColor: '#2a4365',
+                        tension: 0.4
+                    }, {
+                        label: 'Medium',
+                        data: [8, 15, 12, 18, 15, 22],
+                        borderColor: '#ecc94b',
+                        tension: 0.4
+                    }, {
+                        label: 'Low',
+                        data: [5, 10, 8, 12, 9, 15],
+                        borderColor: '#48bb78',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Asset Distribution Chart
+            const assetCtx = document.getElementById('assetDistributionChart').getContext('2d');
+            new Chart(assetCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Protected', 'Monitored', 'At Risk'],
+                    datasets: [{
+                        data: [65, 25, 10],
+                        backgroundColor: [
+                            '#48bb78',
+                            '#4299e1',
+                            '#ecc94b'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Initialize event handlers
+            document.getElementById('scanBtn').addEventListener('click', () => {
+                alert('Starting security scan...');
+                // Add scan functionality
+            });
+
+            document.getElementById('policyBtn').addEventListener('click', () => {
+                alert('Opening policy creator...');
+                // Add policy creation functionality
+            });
+
+            // Activity filters
+            const filters = document.querySelectorAll('.activity-filter');
+            filters.forEach(filter => {
+                filter.addEventListener('click', () => {
+                    filters.forEach(f => f.classList.remove('active'));
+                    filter.classList.add('active');
+                    // Add filter functionality
+                });
+            });
+
+            // Simulate real-time updates
+            setInterval(() => {
+                // Update random metric
+                const metrics = document.querySelectorAll('.metric-value');
+                const randomMetric = metrics[Math.floor(Math.random() * metrics.length)];
+                const currentValue = parseInt(randomMetric.textContent);
+                randomMetric.textContent = currentValue + Math.floor(Math.random() * 5) - 2;
+            }, 5000);
+        });
+        </script>
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <i class="fas fa-shield-alt"></i>
+                Security Dashboard
+            </div>
+            <div class="dashboard-actions">
+                <button class="action-button primary" id="scanBtn">
+                    <i class="fas fa-search"></i>
+                    Scan Now
+                </button>
+                <button class="action-button secondary" id="policyBtn">
+                    <i class="fas fa-plus"></i>
+                    New Policy
+                </button>
+            </div>
+        </div>
+
+        <div class="metrics-overview">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">
+                        <i class="fas fa-shield-virus"></i>
+                        Active Threats
+                    </div>
+                    <div class="metric-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        12%
+                    </div>
+                </div>
+                <div class="metric-value">24</div>
+                <div class="metric-subtitle">
+                    <i class="fas fa-clock"></i>
+                    Last 24 hours
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">
+                        <i class="fas fa-file-shield"></i>
+                        Protected Assets
+                    </div>
+                    <div class="metric-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        8%
+                    </div>
+                </div>
+                <div class="metric-value">156</div>
+                <div class="metric-subtitle">
+                    <i class="fas fa-layer-group"></i>
+                    Total monitored
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">
+                        <i class="fas fa-user-shield"></i>
+                        User Activity
+                    </div>
+                    <div class="metric-trend trend-down">
+                        <i class="fas fa-arrow-down"></i>
+                        5%
+                    </div>
+                </div>
+                <div class="metric-value">89</div>
+                <div class="metric-subtitle">
+                    <i class="fas fa-users"></i>
+                    Active users
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">
+                        <i class="fas fa-chart-line"></i>
+                        System Health
+                    </div>
+                    <div class="metric-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        98%
+                    </div>
+                </div>
+                <div class="metric-value">98%</div>
+                <div class="metric-subtitle">
+                    <i class="fas fa-heart-pulse"></i>
+                    Uptime status
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">
+                        <i class="fas fa-chart-area"></i>
+                        Threat Detection Trends
+                    </div>
+                    <div class="chart-actions">
+                        <i class="fas fa-expand chart-action"></i>
+                        <i class="fas fa-download chart-action"></i>
+                    </div>
+                </div>
+                <div class="chart-container" id="threatTrendsChart"></div>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--primary)"></div>
+                        Critical
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--warning)"></div>
+                        Medium
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--success)"></div>
+                        Low
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Asset Distribution
+                    </div>
+                    <div class="chart-actions">
+                        <i class="fas fa-expand chart-action"></i>
+                        <i class="fas fa-download chart-action"></i>
+                    </div>
+                </div>
+                <div class="chart-container" id="assetDistributionChart"></div>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--accent)"></div>
+                        Protected
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--secondary)"></div>
+                        Monitored
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--warning)"></div>
+                        At Risk
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="activity-feed">
+            <div class="activity-header">
+                <div class="activity-title">
+                    <i class="fas fa-stream"></i>
+                    Recent Activities
+                </div>
+                <div class="activity-filters">
+                    <button class="activity-filter active">All</button>
+                    <button class="activity-filter">Threats</button>
+                    <button class="activity-filter">Assets</button>
+                    <button class="activity-filter">Users</button>
+                </div>
+            </div>
+            <div class="activity-list" id="activityList">
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-shield-virus"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Critical Threat Detected</div>
+                        <div class="activity-description">Suspicious activity detected on IP Asset X</div>
+                        <div class="activity-meta">
+                            <div class="activity-time">
+                                <i class="fas fa-clock"></i>
+                                5 minutes ago
+                            </div>
+                            <div class="activity-status status-danger">Critical</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">User Activity Alert</div>
+                        <div class="activity-description">Unusual login pattern detected for User Y</div>
+                        <div class="activity-meta">
+                            <div class="activity-time">
+                                <i class="fas fa-clock"></i>
+                                15 minutes ago
+                            </div>
+                            <div class="activity-status status-warning">Warning</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-file-shield"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Asset Update</div>
+                        <div class="activity-description">New security policy applied to Asset Z</div>
+                        <div class="activity-meta">
+                            <div class="activity-time">
+                                <i class="fas fa-clock"></i>
+                                30 minutes ago
+                            </div>
+                            <div class="activity-status status-success">Success</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="metrics-overview">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">
+                        <i class="fas fa-shield-virus"></i>
+                        Active Threats
+                    </div>
+                    <div class="metric-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        12%
+                    </div>
+                </div>
+                <div class="metric-value">24</div>
+                <div class="metric-subtitle">
+                    <i class="fas fa-clock"></i>
+                    Last 24 hours
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">
+                        <i class="fas fa-file-shield"></i>
+                        Protected Assets
+                    </div>
+                    <div class="metric-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        8%
+                    </div>
+                </div>
+                <div class="metric-value">156</div>
+                <div class="metric-subtitle">
+                    <i class="fas fa-layer-group"></i>
+                    Total monitored
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">
+                        <i class="fas fa-user-shield"></i>
+                        User Activity
+                    </div>
+                    <div class="metric-trend trend-down">
+                        <i class="fas fa-arrow-down"></i>
+                        5%
+                    </div>
+                </div>
+                <div class="metric-value">89</div>
+                <div class="metric-subtitle">
+                    <i class="fas fa-users"></i>
+                    Active users
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">
+                        <i class="fas fa-chart-line"></i>
+                        System Health
+                    </div>
+                    <div class="metric-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        98%
+                    </div>
+                </div>
+                <div class="metric-value">98%</div>
+                <div class="metric-subtitle">
+                    <i class="fas fa-heart-pulse"></i>
+                    Uptime status
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">System Overview</h1>
+            <div class="dashboard-date" id="current-date"></div>
+        </div>
+
+        <div class="metrics-overview">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">Threat Detection Rate</div>
+                    <div class="metric-trend trend-up">↑ 2.3%</div>
+                </div>
+                <div class="metric-value" id="detection-rate">98.7%</div>
+                <div class="metric-subtitle">Last 24 hours</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">Response Time</div>
+                    <div class="metric-trend trend-down">↓ 5ms</div>
+                </div>
+                <div class="metric-value" id="response-time">45ms</div>
+                <div class="metric-subtitle">Average</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">Active Defenses</div>
+                    <div class="metric-trend trend-up">↑ 3</div>
+                </div>
+                <div class="metric-value" id="active-defenses">127</div>
+                <div class="metric-subtitle">Currently deployed</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">System Health</div>
+                    <div class="metric-trend trend-up">↑ 0.5%</div>
+                </div>
+                <div class="metric-value" id="system-health">99.9%</div>
+                <div class="metric-subtitle">Overall status</div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">Threat Detection Timeline</div>
+                </div>
+                <div class="chart-container" id="detection-chart"></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">Defense Network Status</div>
+                </div>
+                <div class="chart-container" id="network-chart"></div>
+            </div>
+        </div>
+
+        <div class="activity-feed">
+            <div class="activity-header">
+                <h2>Recent Activity</h2>
+            </div>
+            <div class="activity-list" id="activity-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // Load navbar
+        fetch('./components/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+            });
+
+        // Update current date
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Simulate real-time updates
+        function updateMetrics() {
+            const detectionRate = 98.5 + Math.random() * 0.5;
+            const responseTime = 40 + Math.random() * 10;
+            const activeDefenses = 125 + Math.floor(Math.random() * 5);
+            const systemHealth = 99.8 + Math.random() * 0.2;
+
+            document.getElementById('detection-rate').textContent = `${detectionRate.toFixed(1)}%`;
+            document.getElementById('response-time').textContent = `${Math.floor(responseTime)}ms`;
+            document.getElementById('active-defenses').textContent = activeDefenses;
+            document.getElementById('system-health').textContent = `${systemHealth.toFixed(1)}%`;
+        }
+
+        // Simulate activity feed
+        const activities = [
+            'New threat pattern detected',
+            'Defense protocol updated',
+            'System health check completed',
+            'Network security scan initiated',
+            'Anomaly detection model retrained',
+            'IP asset verification completed'
+        ];
+
+        function addActivity() {
+            const activity = activities[Math.floor(Math.random() * activities.length)];
+            const activityList = document.getElementById('activity-list');
+            const activityItem = document.createElement('div');
+            activityItem.className = 'activity-item';
+            activityItem.innerHTML = `
+                <div class="activity-icon">🔔</div>
+                <div class="activity-content">
+                    <div class="activity-title">${activity}</div>
+                    <div class="activity-time">${new Date().toLocaleTimeString()}</div>
+                </div>
+            `;
+            activityList.insertBefore(activityItem, activityList.firstChild);
+
+            if (activityList.children.length > 10) {
+                activityList.removeChild(activityList.lastChild);
+            }
+        }
+
+        // Initialize charts (simplified version)
+        function initializeCharts() {
+            const detectionChart = document.getElementById('detection-chart');
+            const networkChart = document.getElementById('network-chart');
+
+            // Add placeholder content for charts
+            detectionChart.style.background = 'linear-gradient(45deg, var(--background) 25%, transparent 25%, transparent 75%, var(--background) 75%, var(--background))';
+            networkChart.style.background = 'linear-gradient(-45deg, var(--background) 25%, transparent 25%, transparent 75%, var(--background) 75%, var(--background))';
+            detectionChart.style.backgroundSize = '20px 20px';
+            networkChart.style.backgroundSize = '20px 20px';
+        }
+
+        // Start real-time updates
+        initializeCharts();
+        setInterval(updateMetrics, 2000);
+        setInterval(addActivity, 3000);
+    </script>
+</body>
+</html>

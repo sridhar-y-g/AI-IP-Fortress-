@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Modeling - AI-IP-Fortress</title>
+    <style>
+        :root {
+            --primary: #2a4365;
+            --secondary: #4299e1;
+            --accent: #48bb78;
+            --background: #f7fafc;
+            --text: #2d3748;
+            --danger: #e53e3e;
+            --warning: #ecc94b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--background);
+            padding-top: 70px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .module-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .module-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .module-header p {
+            font-size: 1.2rem;
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .risk-assessment {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        .risk-chart {
+            height: 300px;
+            margin: 2rem 0;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--background);
+            border-radius: 8px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: var(--secondary);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease;
+            position: relative;
+            min-height: 20px;
+        }
+
+        .chart-bar::before {
+            content: attr(data-value);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .chart-bar::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .risk-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .module-header {
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .module-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .module-header p {
+                font-size: 1rem;
+            }
+
+            .metric-card {
+                padding: 1.25rem;
+            }
+
+            .metric-value {
+                font-size: 1.5rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+        }
+
+        .metric-card {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .insurance-panel {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .coverage-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .coverage-card {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .coverage-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .coverage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .coverage-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <div class="module-header">
+            <h1>Predictive IP Risk Modeling</h1>
+            <p>AI-powered risk assessment and automated insurance solutions for intellectual property assets</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Risk Assessment</h3>
+                <p>Advanced AI algorithms analyze potential threats and vulnerabilities to predict IP-related risks.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Smart Insurance</h3>
+                <p>Automated insurance solutions with dynamic pricing based on real-time risk assessment.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Continuous Monitoring</h3>
+                <p>24/7 monitoring and assessment of IP assets with automated risk level adjustments.</p>
+            </div>
+        </div>
+
+        <div class="risk-assessment">
+            <h2>Live Risk Assessment</h2>
+            <div class="risk-chart" id="risk-chart"></div>
+            <div class="risk-metrics">
+                <div class="metric-card">
+                    <h3>Overall Risk Score</h3>
+                    <div class="metric-value" id="risk-score">0%</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Threat Level</h3>
+                    <div class="metric-value" id="threat-level">Low</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Confidence Score</h3>
+                    <div class="metric-value" id="confidence-score">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="insurance-panel">
+            <h2>Smart Insurance Coverage</h2>
+            <div class="coverage-options">
+                <div class="coverage-card">
+                    <div class="coverage-header">
+                        <h3>Basic Protection</h3>
+                        <div class="coverage-price">$500/mo</div>
+                    </div>
+                    <ul>
+                        <li>Basic IP theft protection</li>
+                        <li>24/7 monitoring</li>
+                        <li>Incident response support</li>
+                    </ul>
+                </div>
+                <div class="coverage-card">
+                    <div class="coverage-header">
+                        <h3>Advanced Protection</h3>
+                        <div class="coverage-price">$1,000/mo</div>
+                    </div>
+                    <ul>
+                        <li>Enhanced IP theft protection</li>
+                        <li>Proactive threat hunting</li>
+                        <li>Priority incident response</li>
+                        <li>Legal support coverage</li>
+                    </ul>
+                </div>
+                <div class="coverage-card">
+                    <div class="coverage-header">
+                        <h3>Enterprise Protection</h3>
+                        <div class="coverage-price">Custom</div>
+                    </div>
+                    <ul>
+                        <li>Comprehensive IP protection</li>
+                        <li>Custom security solutions</li>
+                        <li>Dedicated response team</li>
+                        <li>Full legal coverage</li>
+                        <li>International protection</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load navbar
+        fetch('./components/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+            });
+
+        // Risk visualization
+        const riskFactors = [
+            { label: 'Cyber Threats', value: 65 },
+            { label: 'Data Breach', value: 45 },
+            { label: 'IP Theft', value: 55 },
+            { label: 'Legal Risk', value: 35 },
+            { label: 'Market Risk', value: 50 }
+        ];
+
+        function createRiskChart() {
+            const chart = document.getElementById('risk-chart');
+            chart.innerHTML = '';
+            
+            riskFactors.forEach(factor => {
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = `${factor.value}%`;
+                bar.setAttribute('data-value', `${factor.value}%`);
+                bar.setAttribute('data-label', factor.label);
+                chart.appendChild(bar);
+            });
+        }
+
+        function updateMetrics() {
+            const riskScore = Math.floor(Math.random() * 20) + 40;
+            const confidenceScore = Math.floor(Math.random() * 10) + 90;
+            const threatLevels = ['Low', 'Medium', 'High'];
+            const threatLevel = threatLevels[Math.floor(Math.random() * threatLevels.length)];
+
+            document.getElementById('risk-score').textContent = `${riskScore}%`;
+            document.getElementById('confidence-score').textContent = `${confidenceScore}%`;
+            document.getElementById('threat-level').textContent = threatLevel;
+
+            // Update risk factors
+            riskFactors.forEach(factor => {
+                factor.value = Math.floor(Math.random() * 30) + 35;
+            });
+            createRiskChart();
+        }
+
+        // Initial setup
+        createRiskChart();
+        setInterval(updateMetrics, 3000);
+    </script>
+</body>
+</html>

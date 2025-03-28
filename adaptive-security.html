@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptive Security - AI-IP-Fortress</title>
+    <style>
+        :root {
+            --primary: #2a4365;
+            --secondary: #4299e1;
+            --accent: #48bb78;
+            --background: #f7fafc;
+            --text: #2d3748;
+            --success: #48bb78;
+            --warning: #ecc94b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--background);
+            padding-top: 70px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .module-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .module-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .module-header p {
+            font-size: 1.2rem;
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .adaptive-demo {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .security-matrix {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: var(--background);
+            border-radius: 8px;
+        }
+
+        .matrix-cell {
+            aspect-ratio: 1;
+            background: var(--secondary);
+            border-radius: 4px;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+
+        .matrix-cell.active {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .learning-progress {
+            margin-top: 2rem;
+        }
+
+        .progress-bar {
+            height: 24px;
+            background: var(--background);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .module-header {
+                text-align: center;
+                padding: 1rem 0;
+            }
+
+            .module-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .module-header p {
+                font-size: 1rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .metric-card {
+                padding: 1.25rem;
+            }
+
+            .metric-value {
+                font-size: 1.5rem;
+            }
+
+            .progress-bar {
+                margin: 0.75rem 0;
+            }
+
+            .protocol-actions {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .action-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .metric-card {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <div class="module-header">
+            <h1>Adaptive Security Protocol Engine</h1>
+            <p>An AI-driven system that continuously evolves its defense mechanisms to counter emerging threats</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Dynamic Learning</h3>
+                <p>Advanced AI algorithms that continuously learn from new threat patterns and adapt security protocols.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Protocol Evolution</h3>
+                <p>Automated security policy adjustments based on emerging threat intelligence and system feedback.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Predictive Defense</h3>
+                <p>Anticipate and prepare for potential threats before they materialize through pattern analysis.</p>
+            </div>
+        </div>
+
+        <div class="adaptive-demo">
+            <h2>Live Protocol Evolution</h2>
+            <div class="security-matrix" id="matrix"></div>
+            <div class="learning-progress">
+                <h3>Learning Progress</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress"></div>
+                </div>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>Protocol Updates</h3>
+                    <div class="metric-value" id="updates">0</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Learning Rate</h3>
+                    <div class="metric-value" id="learning-rate">0%</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Adaptation Score</h3>
+                    <div class="metric-value" id="adaptation-score">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load navbar
+        fetch('./components/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+            });
+
+        // Initialize security matrix
+        const matrix = document.getElementById('matrix');
+        const cells = [];
+        for (let i = 0; i < 64; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'matrix-cell';
+            matrix.appendChild(cell);
+            cells.push(cell);
+        }
+
+        // Simulate protocol evolution
+        let updates = 0;
+        let learningRate = 0;
+        let adaptationScore = 0;
+
+        function updateMatrix() {
+            const activeCount = Math.floor(Math.random() * 5) + 3;
+            cells.forEach(cell => cell.classList.remove('active'));
+            
+            for (let i = 0; i < activeCount; i++) {
+                const index = Math.floor(Math.random() * cells.length);
+                cells[index].classList.add('active');
+            }
+
+            updates++;
+            learningRate = Math.min(100, learningRate + Math.random() * 2);
+            adaptationScore = Math.min(100, adaptationScore + Math.random());
+
+            document.getElementById('updates').textContent = updates;
+            document.getElementById('learning-rate').textContent = `${Math.floor(learningRate)}%`;
+            document.getElementById('adaptation-score').textContent = `${Math.floor(adaptationScore)}%`;
+            document.getElementById('progress').style.width = `${adaptationScore}%`;
+        }
+
+        setInterval(updateMatrix, 2000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<nav class="navbar">
+    <div class="nav-brand">
+        <a href="/">AI-IP-Fortress</a>
+    </div>
+    <div class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="nav-menu">
+        <a href="/" class="nav-item">Home</a>
+        <a href="/anomaly-detection.html" class="nav-item">Anomaly Detection</a>
+        <a href="/threat-response.html" class="nav-item">Threat Response</a>
+        <a href="/adaptive-security.html" class="nav-item">Adaptive Security</a>
+        <a href="/blockchain.html" class="nav-item">Blockchain Integration</a>
+        <a href="/risk-modeling.html" class="nav-item">Risk Modeling</a>
+        <a href="/defense-network.html" class="nav-item">Defense Network</a>
+        <a href="/dashboard.html" class="nav-item">Dashboard</a>
+    </div>
+</nav>
+
+<style>
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--primary);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-brand a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-item {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-item:hover {
+    color: white;
+}
+
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: white;
+    transition: 0.3s;
+}
+
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+        z-index: 1001;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--primary);
+        padding: 1.5rem;
+        flex-direction: column;
+        gap: 1.25rem;
+        transform: translateY(-100%);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 0;
+        visibility: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .nav-item {
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem;
+        border-radius: 6px;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-item:hover {
+        background-color: rgba(255,255,255,0.1);
+    }
+}
+</style>
+
+<script>
+document.querySelector('.nav-toggle').addEventListener('click', () => {
+    document.querySelector('.nav-menu').classList.toggle('active');
+});
+</script>

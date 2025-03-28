@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Response - AI-IP-Fortress</title>
+    <style>
+        :root {
+            --primary: #2a4365;
+            --secondary: #4299e1;
+            --accent: #48bb78;
+            --background: #f7fafc;
+            --text: #2d3748;
+            --danger: #e53e3e;
+            --success: #48bb78;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--background);
+            padding-top: 70px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .module-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .module-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .module-header p {
+            font-size: 1.2rem;
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        .response-simulation {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        .threat-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-event {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.5s ease;
+        }
+
+        .timeline-event.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .event-time {
+            min-width: 100px;
+            padding-right: 1rem;
+            color: var(--text);
+            font-weight: bold;
+        }
+
+        .event-content {
+            background: var(--background);
+            padding: 1rem;
+            border-radius: 8px;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .event-content::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-style: solid;
+            border-width: 8px 8px 8px 0;
+            border-color: transparent var(--background) transparent transparent;
+        }
+
+        .event-type {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-type.threat {
+            color: var(--danger);
+        }
+
+        .event-type.response {
+            color: var(--success);
+        }
+
+        .response-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .module-header {
+                text-align: center;
+                padding: 1rem 0;
+            }
+
+            .module-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .module-header p {
+                font-size: 1rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .metric-card {
+                padding: 1.25rem;
+            }
+
+            .metric-value {
+                font-size: 1.5rem;
+            }
+
+            .response-actions {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .action-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .metric-card {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <div class="module-header">
+            <h1>Autonomous Threat Response</h1>
+            <p>Advanced AI-driven system that autonomously deploys "digital antibodies" to neutralize detected threats</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Digital Antibodies</h3>
+                <p>Automated defense mechanisms that adapt and evolve to counter new types of cyber threats.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Rapid Response</h3>
+                <p>Lightning-fast threat neutralization with minimal human intervention required.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Smart Containment</h3>
+                <p>Intelligent isolation of compromised systems to prevent threat propagation.</p>
+            </div>
+        </div>
+
+        <div class="response-simulation">
+            <h2>Live Threat Response Simulation</h2>
+            <div class="threat-timeline" id="timeline"></div>
+            <div class="response-metrics">
+                <div class="metric-card">
+                    <h3>Average Response Time</h3>
+                    <div class="metric-value" id="response-time">50ms</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Threats Neutralized</h3>
+                    <div class="metric-value" id="threats-neutralized">0</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Success Rate</h3>
+                    <div class="metric-value" id="success-rate">99.9%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load navbar
+        fetch('./components/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+            });
+
+        // Threat response simulation
+        const timeline = document.getElementById('timeline');
+        let threatCount = 0;
+
+        const threats = [
+            'Unauthorized Access Attempt',
+            'Data Exfiltration Detection',
+            'Suspicious API Calls',
+            'Abnormal File Access Pattern',
+            'Potential IP Theft Activity'
+        ];
+
+        const responses = [
+            'Deploying Access Control Antibodies',
+            'Implementing Data Protection Measures',
+            'API Access Restriction Activated',
+            'File System Protection Engaged',
+            'IP Protection Protocol Initiated'
+        ];
+
+        function createTimelineEvent(type, content, time) {
+            const event = document.createElement('div');
+            event.className = 'timeline-event';
+            event.innerHTML = `
+                <div class="event-time">${time}</div>
+                <div class="event-content">
+                    <div class="event-type ${type}">${type === 'threat' ? '⚠️ Threat Detected' : '🛡️ Response Initiated'}</div>
+                    <div class="event-description">${content}</div>
+                </div>
+            `;
+            timeline.insertBefore(event, timeline.firstChild);
+            setTimeout(() => event.classList.add('active'), 100);
+
+            // Keep only last 5 events
+            if (timeline.children.length > 10) {
+                timeline.removeChild(timeline.lastChild);
+            }
+        }
+
+        function simulateThreatResponse() {
+            const time = new Date().toLocaleTimeString();
+            const threatIndex = Math.floor(Math.random() * threats.length);
+            
+            // Create threat event
+            createTimelineEvent('threat', threats[threatIndex], time);
+
+            // Simulate response delay
+            setTimeout(() => {
+                createTimelineEvent('response', responses[threatIndex], time);
+                threatCount++;
+                document.getElementById('threats-neutralized').textContent = threatCount;
+            }, Math.random() * 200 + 100);
+        }
+
+        // Update metrics
+        function updateMetrics() {
+            const responseTime = 45 + Math.random() * 10;
+            const successRate = 99.8 + Math.random() * 0.2;
+            
+            document.getElementById('response-time').textContent = `${responseTime.toFixed(0)}ms`;
+            document.getElementById('success-rate').textContent = `${successRate.toFixed(1)}%`;
+        }
+
+        // Start simulation
+        setInterval(simulateThreatResponse, 5000);
+        setInterval(updateMetrics, 2000);
+    </script>
+</body>
+</html>
